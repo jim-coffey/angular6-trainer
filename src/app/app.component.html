@@ -1,2 +1,15 @@
-<button mat-icon-button color="accent"><mat-icon>home</mat-icon></button>
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <button mat-icon-button color="accent"><mat-icon>home</mat-icon></button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div><button (click)="onToggle()">Toggle Sidenav</button></div>
+      <div>LOGO</div>
+      <div>
+        <a routerLink="/signup">Signup</a> <a routerLink="/login">Signin</a> <a routerLink="/training">Training</a>
+      </div>
+    </mat-toolbar>
+    <main><router-outlet></router-outlet></main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
