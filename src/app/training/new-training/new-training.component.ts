@@ -12,19 +12,19 @@ export class NewTrainingComponent implements OnInit {
   exercises = [
     {
       value: 'crunches',
-      valueView: 'Crunches'
+      viewValue: 'Crunches'
     },
     {
       value: 'touch-toes',
-      valueView: 'Touch Toes'
+      viewValue: 'Touch Toes'
     },
     {
       value: 'side-lunges',
-      valueView: 'Side Lunges'
+      viewValue: 'Side Lunges'
     },
     {
       value: 'burpees',
-      valueView: 'Burpees'
+      viewValue: 'Burpees'
     }
   ];
 
