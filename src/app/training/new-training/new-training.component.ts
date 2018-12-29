@@ -24,17 +24,19 @@ export class NewTrainingComponent implements OnInit {
     this.loadingSub = this.uiService.loadingStateChanged.subscribe((loadingState: boolean) => {
       this.isLoading = loadingState;
     });
-
     this.exercisesSub = this.trainingService.exercisesChanged.subscribe((exercises: Exercise[]) => {
       this.exercises = exercises;
     });
-
-    this.trainingService.fetchAvailableExercises();
+    this.fetchExercises();
   }
 
   ngOnDestroy() {
     this.exercisesSub.unsubscribe();
     this.loadingSub.unsubscribe();
+  }
+
+  fetchExercises() {
+    this.trainingService.fetchAvailableExercises();
   }
 
   onStartTraining(form: NgForm) {
