@@ -5,11 +5,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
 import { AuthModule } from './auth/auth.module';
-import { TrainingModule } from './training/training.module';
 
 import { AuthService } from './auth/auth.service';
 import { TrainingService } from './training/training.service';
@@ -27,10 +27,10 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    AngularFirestoreModule,
     MatMomentDateModule,
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
-    TrainingModule,
     AppRoutingModule,
     MaterialModule
   ],
