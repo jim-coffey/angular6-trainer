@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { TrainingService } from '../training/training.service';
 import { AuthData } from './auth-data.model';
+import { UIService } from '../shared/ui.service';
 
 @Injectable()
 export class AuthService {
@@ -16,11 +17,13 @@ export class AuthService {
     private router: Router,
     private afAuth: AngularFireAuth,
     private trainingService: TrainingService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private uiService: UIService
   ) {}
 
   initAuthListener() {
     this.afAuth.authState.subscribe(user => {
+      this.uiService.loadingStateChanged.next(false);
       if (user) {
         this.isAuthenticated = true;
         this.authChange.next(true);
@@ -35,19 +38,23 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData) {
-    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).catch(error =>
+    this.uiService.loadingStateChanged.next(true);
+    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).catch(error => {
+      this.uiService.loadingStateChanged.next(false);
       this.snackbar.open(error.message, null, {
         duration: 3000
-      })
-    );
+      });
+    });
   }
 
   login(authData: AuthData) {
-    this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password).catch(error =>
+    this.uiService.loadingStateChanged.next(true);
+    this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password).catch(error => {
+      this.uiService.loadingStateChanged.next(false);
       this.snackbar.open(error.message, null, {
         duration: 3000
-      })
-    );
+      });
+    });
   }
 
   logout() {

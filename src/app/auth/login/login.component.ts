@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AuthService } from '../auth.service';
+import { UIService } from '../../shared/ui.service';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +11,17 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  private loadingSub: Subscription;
+  isLoggingIn: boolean;
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private uiService: UIService) {}
 
   ngOnInit() {
+    this.loadingSub = this.uiService.loadingStateChanged.subscribe((loadingState: boolean) => {
+      this.isLoggingIn = loadingState;
+    });
+
     this.loginForm = new FormGroup({
       email: new FormControl('', {
         validators: [Validators.required, Validators.email]
@@ -24,8 +32,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.loadingSub.unsubscribe();
+  }
+
   onSubmit() {
-    console.log(this.loginForm);
     this.authService.login({
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
