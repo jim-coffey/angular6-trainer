@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { MatSnackBar } from '@angular/material';
 
 import { TrainingService } from '../training/training.service';
 import { AuthData } from './auth-data.model';
@@ -11,7 +12,12 @@ export class AuthService {
   public authChange = new Subject<boolean>();
   private isAuthenticated: boolean;
 
-  constructor(private router: Router, private afAuth: AngularFireAuth, private trainingService: TrainingService) {}
+  constructor(
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private trainingService: TrainingService,
+    private snackbar: MatSnackBar
+  ) {}
 
   initAuthListener() {
     this.afAuth.authState.subscribe(user => {
@@ -29,15 +35,19 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData) {
-    this.afAuth.auth
-      .createUserWithEmailAndPassword(authData.email, authData.password)
-      .catch(error => console.log(error));
+    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password).catch(error =>
+      this.snackbar.open(error.message, null, {
+        duration: 3000
+      })
+    );
   }
 
   login(authData: AuthData) {
-    this.afAuth.auth
-      .signInWithEmailAndPassword(authData.email, authData.password)
-      .catch(error => console.log('ERROR:', error));
+    this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password).catch(error =>
+      this.snackbar.open(error.message, null, {
+        duration: 3000
+      })
+    );
   }
 
   logout() {
