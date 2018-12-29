@@ -7,6 +7,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -49,7 +50,8 @@ import { TrainingService } from './training/training.service';
     MatMomentDateModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, AuthService, TrainingService],
   bootstrap: [AppComponent],

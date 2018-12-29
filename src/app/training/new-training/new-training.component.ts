@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
-import { MAT_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/material';
 
 @Component({
   selector: 'app-new-training',
@@ -14,23 +11,22 @@ import { MAT_DIALOG_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/material';
   styleUrls: ['./new-training.component.css']
 })
 export class NewTrainingComponent implements OnInit {
-  exercisesCollection: AngularFirestoreCollection<Exercise>;
-  exercises: Observable<Exercise[]>;
+  exercises: Exercise[];
+  private exercisesSub: Subscription;
 
-  constructor(private trainingService: TrainingService, private db: AngularFirestore) {}
+  constructor(private trainingService: TrainingService) {
+    this.trainingService.fetchAvailableExercises();
+  }
 
   ngOnInit() {
-    this.exercisesCollection = this.db.collection<Exercise>('availableExercises');
-    this.exercises = this.exercisesCollection.snapshotChanges().pipe(
-      map(documents => {
-        return documents.map(doc => {
-          return {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data()
-          };
-        });
-      })
-    );
+    this.exercisesSub = this.trainingService.exercisesChanged.subscribe((exercises: Exercise[]) => {
+      this.exercises = exercises;
+    });
+    this.trainingService.fetchAvailableExercises();
+  }
+
+  ngOnDestroy() {
+    this.exercisesSub.unsubscribe();
   }
 
   onStartTraining(form: NgForm) {

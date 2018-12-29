@@ -13,3 +13,7 @@ a:active {
   margin: none;
   padding: none;
 }
+
+.logout {
+  cursor: pointer;
+}
