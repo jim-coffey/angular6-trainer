@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Store } from '@ngrx/store';
 
-import { State } from '../app.reducer';
+import * as fromRoot from '../app.reducer';
 import { setBusyState } from '../app.actions';
 import { Exercise } from './exercise.model';
 import { UIService } from '../shared/ui.service';
@@ -20,7 +20,7 @@ export class TrainingService {
   public exercisesChanged = new Subject<Exercise[]>();
   public finishedExercisesChanged = new Subject<Exercise[]>();
 
-  constructor(private db: AngularFirestore, private uiService: UIService, private store: Store<{ ui: State }>) {}
+  constructor(private db: AngularFirestore, private uiService: UIService, private store: Store<fromRoot.AppState>) {}
 
   public cancelSubscriptions() {
     this.fbSubs.forEach(sub => sub.unsubscribe());
