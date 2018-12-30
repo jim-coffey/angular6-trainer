@@ -10,7 +10,7 @@ const initialState = {
   isBusy: false
 };
 
-export const uiReducer = (state: UIState = initialState, action: UIActions) => {
+export function uiReducer(state: UIState = initialState, action: UIActions) {
   switch (action.type) {
     case SET_BUSY_STATE:
       return {
@@ -21,6 +21,6 @@ export const uiReducer = (state: UIState = initialState, action: UIActions) => {
     default:
       return state;
   }
-};
+}
 
 export const getIsBusy = (state: UIState) => state.isBusy;

@@ -21,7 +21,7 @@ const initialState: TrainingState = {
   activeTraining: null
 };
 
-export const trainingReducer = (state: TrainingState = initialState, action: TrainingActions) => {
+export function trainingReducer(state: TrainingState = initialState, action: TrainingActions) {
   switch (action.type) {
     case SET_AVAILABLE_EXERCISES:
       return {
@@ -50,7 +50,7 @@ export const trainingReducer = (state: TrainingState = initialState, action: Tra
     default:
       return state;
   }
-};
+}
 
 export const getTrainingState = createFeatureSelector<TrainingState>('training');
 

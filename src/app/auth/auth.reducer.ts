@@ -10,7 +10,7 @@ const initialState = {
   isAuth: false
 };
 
-export const authReducer = (state: AuthState = initialState, action: AuthActions) => {
+export function authReducer(state: AuthState = initialState, action: AuthActions) {
   switch (action.type) {
     case SET_AUTH_STATE:
       return {
@@ -21,6 +21,6 @@ export const authReducer = (state: AuthState = initialState, action: AuthActions
     default:
       return state;
   }
-};
+}
 
 export const getIsAuth = (state: AuthState) => state.isAuth;
