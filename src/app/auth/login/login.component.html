@@ -6,7 +6,7 @@
     <mat-form-field>
       <input matInput type="password" placeholder="Your Password" class="form-control" formControlName="password" />
     </mat-form-field>
-    <button *ngIf="!isLoggingIn" type="submit" mat-raised-button color="primary">Submit</button>
-    <mat-spinner *ngIf="isLoggingIn"></mat-spinner>
+    <button *ngIf="!(isLoggingIn$ | async)" type="submit" mat-raised-button color="primary">Submit</button>
+    <mat-spinner *ngIf="(isLoggingIn$ | async)"></mat-spinner>
   </div>
 </form>

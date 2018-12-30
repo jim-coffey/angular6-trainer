@@ -6,6 +6,7 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material.module';
@@ -14,6 +15,8 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { TrainingService } from './training/training.service';
 import { UIService } from './shared/ui.service';
+
+import { appReducer } from './app.reducer';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -32,7 +35,8 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     AngularFireModule.initializeApp(environment.firebase),
     AuthModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    StoreModule.forRoot({ ui: appReducer })
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, AuthService, TrainingService, UIService],
   bootstrap: [AppComponent]

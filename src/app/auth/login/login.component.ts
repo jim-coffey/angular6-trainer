@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
 
+import { State } from '../../app.reducer';
 import { AuthService } from '../auth.service';
-import { UIService } from '../../shared/ui.service';
 
 @Component({
   selector: 'app-login',
@@ -11,16 +13,13 @@ import { UIService } from '../../shared/ui.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private loadingSub: Subscription;
-  isLoggingIn: boolean;
+  isLoggingIn$: Observable<boolean>;
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private uiService: UIService) {}
+  constructor(private authService: AuthService, private store: Store<{ ui: State }>) {}
 
   ngOnInit() {
-    this.loadingSub = this.uiService.loadingStateChanged.subscribe((loadingState: boolean) => {
-      this.isLoggingIn = loadingState;
-    });
+    this.isLoggingIn$ = this.store.pipe(map(({ ui: { isBusy } }) => isBusy));
 
     this.loginForm = new FormGroup({
       email: new FormControl('', {
@@ -30,12 +29,6 @@ export class LoginComponent implements OnInit {
         validators: [Validators.required]
       })
     });
-  }
-
-  ngOnDestroy() {
-    if (this.loadingSub) {
-      this.loadingSub.unsubscribe();
-    }
   }
 
   onSubmit() {
