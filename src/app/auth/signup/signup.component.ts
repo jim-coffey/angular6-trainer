@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../app.reducer';
+import * as fromRoot from '../../app.reducer';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -16,10 +15,10 @@ export class SignupComponent implements OnInit {
   public isRegistering$: Observable<boolean>;
   public maxDate: Date;
 
-  constructor(private authService: AuthService, private store: Store<{ ui: State }>) {}
+  constructor(private authService: AuthService, private store: Store<fromRoot.AppState>) {}
 
   ngOnInit() {
-    this.isRegistering$ = this.store.pipe(map(({ ui: { isBusy } }) => isBusy));
+    this.isRegistering$ = this.store.select(fromRoot.getIsUIBusy);
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }

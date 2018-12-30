@@ -1,22 +1,17 @@
-import { SET_BUSY_STATE } from './app.actionTypes';
+import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 
-export interface State {
-  isBusy: boolean;
+import * as fromUI from './shared/ui.reducer';
+
+export interface AppState {
+  ui: fromUI.UIState;
 }
 
-const initialState: State = {
-  isBusy: false
+export const reducers: ActionReducerMap<AppState> = {
+  ui: fromUI.uiReducer
 };
 
-export function appReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_BUSY_STATE:
-      return {
-        ...state,
-        isBusy: action.payload
-      };
-
-    default:
-      return state;
-  }
-}
+export const getUIState = createFeatureSelector<fromUI.UIState>('ui');
+export const getIsUIBusy = createSelector(
+  getUIState,
+  fromUI.getIsBusy
+);

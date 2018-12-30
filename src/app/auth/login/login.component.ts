@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../app.reducer';
+import * as fromRoot from '../../app.reducer';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -16,10 +15,10 @@ export class LoginComponent implements OnInit {
   isLoggingIn$: Observable<boolean>;
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private store: Store<{ ui: State }>) {}
+  constructor(private authService: AuthService, private store: Store<fromRoot.AppState>) {}
 
   ngOnInit() {
-    this.isLoggingIn$ = this.store.pipe(map(({ ui: { isBusy } }) => isBusy));
+    this.isLoggingIn$ = this.store.select(fromRoot.getIsUIBusy);
 
     this.loginForm = new FormGroup({
       email: new FormControl('', {

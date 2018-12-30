@@ -16,7 +16,7 @@ import { AuthService } from './auth/auth.service';
 import { TrainingService } from './training/training.service';
 import { UIService } from './shared/ui.service';
 
-import { appReducer } from './app.reducer';
+import { reducers } from './app.reducer';
 
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -36,7 +36,7 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
     AuthModule,
     AppRoutingModule,
     MaterialModule,
-    StoreModule.forRoot({ ui: appReducer })
+    StoreModule.forRoot(reducers)
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }, AuthService, TrainingService, UIService],
   bootstrap: [AppComponent]

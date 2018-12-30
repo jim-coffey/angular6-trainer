@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { State } from '../../app.reducer';
+import { AppState, getIsUIBusy } from '../../app.reducer';
 import { Exercise } from '../exercise.model';
 import { TrainingService } from '../training.service';
 
@@ -19,10 +19,10 @@ export class NewTrainingComponent implements OnInit {
   public exercises: Exercise[];
   public isLoading$: Observable<boolean>;
 
-  constructor(private trainingService: TrainingService, private store: Store<{ ui: State }>) {}
+  constructor(private trainingService: TrainingService, private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.isLoading$ = this.store.pipe(map(({ ui: { isBusy } }) => isBusy));
+    this.isLoading$ = this.store.select(getIsUIBusy);
     this.exercisesSub = this.trainingService.exercisesChanged.subscribe((exercises: Exercise[]) => {
       this.exercises = exercises;
     });
